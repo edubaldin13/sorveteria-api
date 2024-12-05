@@ -29,6 +29,9 @@ namespace Sorveteria.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit");
+
                     b.Property<string>("NomeCliente")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -42,15 +45,14 @@ namespace Sorveteria.Migrations
                     b.Property<int?>("Sabor2Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SaborId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Valor")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SaborId");
+                    b.HasIndex("Sabor1Id");
+
+                    b.HasIndex("Sabor2Id");
 
                     b.ToTable("Pedidos");
 
@@ -58,7 +60,8 @@ namespace Sorveteria.Migrations
                         new
                         {
                             Id = 1,
-                            NomeCliente = "Mousse de Maracuja",
+                            Ativo = true,
+                            NomeCliente = "Eduardo",
                             QuantidadeBolas = 1,
                             Sabor1Id = 1,
                             Valor = 10.2m
@@ -77,7 +80,7 @@ namespace Sorveteria.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("ValorBola")
+                    b.Property<decimal?>("ValorBola")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
@@ -135,11 +138,20 @@ namespace Sorveteria.Migrations
 
             modelBuilder.Entity("Sorveteria.DTO.Pedido", b =>
                 {
-                    b.HasOne("Sorveteria.DTO.Sabor", "Sabor")
+                    b.HasOne("Sorveteria.DTO.Sabor", "Sabor1")
                         .WithMany()
-                        .HasForeignKey("SaborId");
+                        .HasForeignKey("Sabor1Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                    b.Navigation("Sabor");
+                    b.HasOne("Sorveteria.DTO.Sabor", "Sabor2")
+                        .WithMany()
+                        .HasForeignKey("Sabor2Id")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Sabor1");
+
+                    b.Navigation("Sabor2");
                 });
 #pragma warning restore 612, 618
         }

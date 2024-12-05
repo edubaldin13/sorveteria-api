@@ -28,6 +28,11 @@ namespace Sorveteria.Controllers
         {
             return await _saboresRepository.SaveSabores(saboresPostRequest);
         }
+        //[HttpPatch]
+        //public async Task<object> AlterarSabor([FromBody] SaborPatchRequest sabor)
+        //{
+        //    return await _saboresRepository.AlterarSabor();
+        //}
         
     }
 }

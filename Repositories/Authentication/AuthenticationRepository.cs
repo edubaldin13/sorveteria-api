@@ -21,6 +21,11 @@ namespace Sorveteria.Repositórios.Authentication
         }
         public async Task<AuthenticationPostResponse?> Authenticate(AuthenticationPostRequest request)
         {
+            var teste = new AuthenticationPostResponse();
+            try
+            {
+                
+            
             var record = await _context.Users.FirstOrDefaultAsync(r => r.Email == request.Email);
             if (request.Email != "eduarbaldin@gmail.com")
             {
@@ -43,11 +48,17 @@ namespace Sorveteria.Repositórios.Authentication
                 SigningCredentials = new(new SymmetricSecurityKey(salt), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            //TODO método de desencriptar a senha usando o salt para validar se o usuário está com as credenciais validas
-            return new AuthenticationPostResponse
+                //TODO método de desencriptar a senha usando o salt para validar se o usuário está com as credenciais validas
+                //return new AuthenticationPostResponse
+                //{
+                teste.Token = tokenHandler.WriteToken(token);
+            //};
+            }
+            catch (Exception ex)
             {
-                Token = tokenHandler.WriteToken(token),
-            };
+
+            }
+            return teste;
         }
         private bool VerifyPassword(string enteredPassword, string storedHash, string storedSalt)
         {

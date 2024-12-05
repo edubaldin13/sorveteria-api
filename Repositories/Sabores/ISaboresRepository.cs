@@ -7,5 +7,6 @@ namespace Sorveteria.Repositories.Sabores
     {
         public Task<List<GetSaboresResponse>> GetSabores();
         public Task<int> SaveSabores(SaboresPostRequest sabor);
+        //public Task<object> AlterarSabor(SaborPatchRequest sabor);
     }
 }
